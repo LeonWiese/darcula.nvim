@@ -1,2 +1,2 @@
 " Dummy colorscheme file for Rusty
-lua require("rusty").apply()
+lua require("darcula").apply()

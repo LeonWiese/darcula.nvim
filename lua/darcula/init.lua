@@ -1,34 +1,34 @@
--- Rusty
--- https://github.com/namrabtw
---
--- Modified version of:
--- Tomorrow Night - Full Colour and 256 Colour
--- http://chriskempson.com
---
--- Hex colour conversion functions borrowed from the theme "Desert256"
+-- Darcula
 
 local M = {}
 
 -- Default configuration
 local config = {
-	transparent = false,  -- Enable/disable transparency
-	italic_comments = true,  -- Enable/disable italic comments
-	underline_current_line = false,  -- Enable/disable underline for current line
+	transparent = false, -- Enable/disable transparency
+	italic_comments = true, -- Enable/disable italic comments
+	underline_current_line = false, -- Enable/disable underline for current line
 	colors = {
 		foreground = "c5c8c6",
-		background = "1d1f21",
-		selection = "373b41",
+		background = "1E1F22",
+		selection = "214283",
 		line = "282a2e",
 		comment = "969896",
+		darker = "565756",
 		red = "cc6666",
-		orange = "de935f",
+		orange = "cb7832",
 		yellow = "f0c674",
+		bright_yellow = "93A629",
 		green = "b5bd68",
-		aqua = "8abeb7",
-		blue = "81a2be",
+		bright_green = "bbb529",
+		dark_green = "6A8759",
+		aqua = "5ec9c6",
+		cyan = "35a790",
+		blue = "4EADE5",
 		purple = "b294bb",
+		pink = "BF63D4",
 		window = "4d5057",
-	}
+		indent = "26272B",
+	},
 }
 
 local lualine = {
@@ -83,7 +83,9 @@ end
 -- Apply highlights for various groups
 local function apply_highlight(group, fg, bg, attr)
 	local cmd = "highlight " .. group
-	if fg then cmd = cmd .. " guifg=#" .. fg .. " ctermfg=" .. hex_to_cterm(fg) end
+	if fg then
+		cmd = cmd .. " guifg=#" .. fg .. " ctermfg=" .. hex_to_cterm(fg)
+	end
 	if bg then
 		if config.transparent and group == "Normal" then
 			cmd = cmd .. " guibg=NONE ctermbg=NONE"
@@ -91,7 +93,9 @@ local function apply_highlight(group, fg, bg, attr)
 			cmd = cmd .. " guibg=#" .. bg .. " ctermbg=" .. hex_to_cterm(bg)
 		end
 	end
-	if attr then cmd = cmd .. " gui=" .. attr .. " cterm=" .. attr end
+	if attr then
+		cmd = cmd .. " gui=" .. attr .. " cterm=" .. attr
+	end
 	vim.cmd(cmd)
 end
 
@@ -102,8 +106,8 @@ function M.apply()
 	-- Basic highlights
 	apply_highlight("Normal", c.foreground, c.background)
 	apply_highlight("NormalFloat", c.foreground, c.background)
-	apply_highlight("LineNr", c.selection, nil)
-	apply_highlight("NonText", c.selection, nil)
+	apply_highlight("LineNr", c.darker, nil)
+	apply_highlight("NonText", c.darker, nil)
 	apply_highlight("SpecialKey", c.selection, nil)
 	apply_highlight("Search", c.background, c.yellow)
 	apply_highlight("TabLine", c.foreground, c.background, "reverse")
@@ -116,44 +120,70 @@ function M.apply()
 	apply_highlight("MoreMsg", c.green, nil)
 	apply_highlight("Question", c.green, nil)
 	apply_highlight("WarningMsg", c.red, nil)
-	apply_highlight("MatchParen", nil, c.selection)
+	-- apply_highlight("MatchParen", nil, c.dark)
 	apply_highlight("Folded", c.comment, c.background)
 	apply_highlight("FoldColumn", nil, c.background)
 	apply_highlight("CursorLine", nil, config.underline_current_line and c.line or nil, "none")
 	apply_highlight("CursorColumn", nil, nil, "none")
-	apply_highlight("PMenu", c.foreground, c.selection, "none")
-	apply_highlight("PMenuSel", c.foreground, c.selection, "reverse")
+	apply_highlight("PMenu", c.foreground, c.darker, "none")
+	apply_highlight("PMenuSel", c.foreground, c.darker, "reverse")
 	apply_highlight("SignColumn", nil, nil, "none")
 	apply_highlight("ColorColumn", nil, nil, "none")
 
 	-- Syntax highlights
-	apply_highlight("Type", c.orange, nil)
+	apply_highlight("Type", c.cyan, nil)
 	apply_highlight("Comment", c.comment, nil, config.italic_comments and "italic" or nil)
 	apply_highlight("Todo", c.comment, c.background)
 	apply_highlight("Title", c.comment, nil)
 	apply_highlight("Identifier", c.purple, nil, "none")
-	apply_highlight("Statement", c.purple, nil)
-	apply_highlight("Function", c.foreground, nil)
+	apply_highlight("Statement", c.orange, nil, "none")
+	apply_highlight("Function", c.yellow, nil)
 	apply_highlight("Constant", c.orange, nil)
 	apply_highlight("Character", c.yellow, nil)
-	apply_highlight("String", c.green, nil)
-	apply_highlight("Special", c.foreground, nil)
+	apply_highlight("String", c.dark_green, nil)
+	apply_highlight("Number", c.blue, nil)
+	apply_highlight("Special", c.orange, nil)
 	apply_highlight("PreProc", c.orange, nil)
 	apply_highlight("Structure", c.foreground, nil, "none")
 	apply_highlight("Include", c.aqua, nil)
 	apply_highlight("Operator", c.foreground, nil)
+	apply_highlight("@comment.documentation", c.green, nil)
 
 	-- Vim-specific highlights
 	apply_highlight("vimCommand", c.red, nil, "none")
 	apply_highlight("@namespace", c.foreground, nil, "none")
-	apply_highlight("@function", c.aqua, nil, "none")
+	apply_highlight("@function", c.yellow, nil, "none")
+	-- apply_highlight("@punctuation.delimiter", c.orange, nil)
+
+	-- HTML tags
+	apply_highlight("@tag", c.yellow, nil)
 
 	-- LSP highlights
-	apply_highlight("@lsp.type.function", c.aqua, nil, "none")
+	apply_highlight("@lsp.type.function", c.yellow, nil, "none")
 	apply_highlight("@lsp.type.variable", c.foreground, nil, "none")
-	apply_highlight("@lsp.type.struct", c.orange, nil, "none")
+	apply_highlight("@lsp.type.parameter", c.foreground, nil, "none")
+	apply_highlight("@lsp.type.type", c.bright_green, nil, "none")
+	apply_highlight("@lsp.type.typeAlias", c.bright_green, nil, "none")
+	apply_highlight("@lsp.type.struct", c.cyan, nil, "none")
+	apply_highlight("@lsp.type.class", c.cyan, nil, "none")
+	apply_highlight("@lsp.type.interface", c.aqua, nil, "none")
+	apply_highlight("@lsp.type.enum", c.bright_yellow, nil, "none")
+	apply_highlight("@lsp.type.enumMember.rust", c.purple, nil, "italic")
 	apply_highlight("@lsp.type.namespace", c.foreground, nil, "none")
+	apply_highlight("@lsp.type.keyword", c.orange, nil, "none")
 	apply_highlight("@lsp.type.enumMember", c.foreground, nil, "none")
+	apply_highlight("@lsp.type.number", c.blue, nil, "none")
+	apply_highlight("@lsp.type.typeParameter", c.blue, nil, "none")
+	apply_highlight("@lsp.type.macro", c.blue, nil, "none")
+	apply_highlight("@lsp.type.decorator", c.bright_green, nil, "none")
+	apply_highlight("@lsp.type.lifetime", c.pink, nil, "italic")
+
+	-- apply_highlight("@lsp.mod.async", nil, nil, "italic")
+
+	-- Rust highlights
+	apply_highlight("@lsp.mod.mutable", nil, nil, "underline")
+	apply_highlight("@lsp.mod.documentation", c.green, nil)
+	apply_highlight("@lsp.typemod.operator.controlFlow.rust", c.orange, nil)
 
 	-- Diff highlights
 	local diffbackground = "494e56"
@@ -169,6 +199,16 @@ function M.apply()
 	apply_highlight("ShowMarksHLo", c.purple, c.background, "none")
 	apply_highlight("ShowMarksHLu", c.yellow, c.background, "none")
 	apply_highlight("ShowMarksHLm", c.aqua, c.background, "none")
+
+	-- Indent line
+	apply_highlight("IndentLine", c.indent, nil)
+	apply_highlight("IndentLineCurrent", c.indent, nil)
+
+	-- Which Key
+	apply_highlight("WhichKeyGroup", c.green, nil)
+	apply_highlight("WhichKey", c.blue, nil, "bold")
+
+	apply_highlight("LspInlayHint", c.darker, nil, "italic")
 end
 
 return M
