@@ -150,6 +150,7 @@ function M.apply()
     apply_highlight("Structure", c.foreground, nil, "none")
     apply_highlight("Include", c.aqua, nil)
     apply_highlight("Operator", c.foreground, nil)
+    apply_highlight("@variable", c.foreground, nil)
     apply_highlight("@comment.documentation", c.green, nil)
 
     -- Vim-specific highlights
@@ -189,6 +190,11 @@ function M.apply()
     apply_highlight("@lsp.mod.mutable", nil, nil, "underline")
     apply_highlight("@lsp.mod.documentation", c.green, nil)
     apply_highlight("@lsp.typemod.operator.controlFlow.rust", c.orange, nil)
+
+    -- Terraform highlights
+    apply_highlight("@variable.builtin.terraform", c.foreground, nil)
+    apply_highlight("@lsp.type.type.terraform", c.orange, nil)
+    apply_highlight("@lsp.typemod.enumMember.defaultLibrary.terraform", c.cyan, nil)
 
     -- Diff highlights
     local diffbackground = "494e56"
