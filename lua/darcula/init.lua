@@ -8,27 +8,36 @@ local config = {
     italic_comments = true, -- Enable/disable italic comments
     underline_current_line = false, -- Enable/disable underline for current line
     colors = {
-        foreground = "c5c8c6",
-        background = "1E1F22",
-        selection = "214283",
-        reference = "212B45",
-        line = "282a2e",
-        comment = "969896",
-        darker = "565756",
-        red = "cc6666",
-        orange = "cb7832",
-        yellow = "f0c674",
-        bright_yellow = "93A629",
-        green = "b5bd68",
-        bright_green = "bbb529",
-        dark_green = "6A8759",
-        aqua = "5ec9c6",
-        cyan = "35a790",
-        blue = "4EADE5",
-        purple = "b294bb",
-        pink = "BF63D4",
-        window = "4d5057",
-        indent = "26272B",
+        foreground = "#c5c8c6",
+        background = "#1e1f22",
+        selection = "#214283",
+        reference = "#2D2E33",
+        line = "#282a2e",
+        comment = "#969896",
+        darker = "#565756",
+        red = "#cc6666",
+        orange = "#cb7832",
+        yellow = "#f0c674",
+        bright_yellow = "#93a629",
+        green = "#b5bd68",
+        bright_green = "#bbb529",
+        dark_green = "#6a8759",
+        aqua = "#5ec9c6",
+        cyan = "#35a790",
+        blue = "#4eade5",
+        purple = "#b294bb",
+        pink = "#bf63d4",
+        window = "#4d5057",
+        indent = "#26272b",
+
+        -- diffs
+        diffAdd = "#34462f",
+        diffDelete = "#462f2f",
+        diffChange = "#2f4146",
+        diffText = "#463C2F",
+        diffAdded = "#365A2B",
+        diffRemoved = "#5E2E2E",
+        diffChanged = "#1D4956",
     },
 }
 
@@ -36,34 +45,34 @@ M.config = config
 
 local lualine = {
     normal = {
-        a = { fg = "#" .. config.colors.background, bg = "#" .. config.colors.blue, gui = "bold" },
-        b = { fg = "#" .. config.colors.foreground, bg = "#" .. config.colors.line },
-        c = { fg = "#" .. config.colors.foreground, bg = "#" .. config.colors.background },
+        a = { fg = config.colors.background, bg = config.colors.blue, gui = "bold" },
+        b = { fg = config.colors.foreground, bg = config.colors.line },
+        c = { fg = config.colors.foreground, bg = config.colors.background },
     },
     insert = {
-        a = { fg = "#" .. config.colors.background, bg = "#" .. config.colors.green, gui = "bold" },
-        b = { fg = "#" .. config.colors.foreground, bg = "#" .. config.colors.line },
-        c = { fg = "#" .. config.colors.foreground, bg = "#" .. config.colors.background },
+        a = { fg = config.colors.background, bg = config.colors.green, gui = "bold" },
+        b = { fg = config.colors.foreground, bg = config.colors.line },
+        c = { fg = config.colors.foreground, bg = config.colors.background },
     },
     visual = {
-        a = { fg = "#" .. config.colors.background, bg = "#" .. config.colors.purple, gui = "bold" },
-        b = { fg = "#" .. config.colors.foreground, bg = "#" .. config.colors.line },
-        c = { fg = "#" .. config.colors.foreground, bg = "#" .. config.colors.background },
+        a = { fg = config.colors.background, bg = config.colors.purple, gui = "bold" },
+        b = { fg = config.colors.foreground, bg = config.colors.line },
+        c = { fg = config.colors.foreground, bg = config.colors.background },
     },
     replace = {
-        a = { fg = "#" .. config.colors.background, bg = "#" .. config.colors.red, gui = "bold" },
-        b = { fg = "#" .. config.colors.foreground, bg = "#" .. config.colors.line },
-        c = { fg = "#" .. config.colors.foreground, bg = "#" .. config.colors.background },
+        a = { fg = config.colors.background, bg = config.colors.red, gui = "bold" },
+        b = { fg = config.colors.foreground, bg = config.colors.line },
+        c = { fg = config.colors.foreground, bg = config.colors.background },
     },
     command = {
-        a = { fg = "#" .. config.colors.background, bg = "#" .. config.colors.orange, gui = "bold" },
-        b = { fg = "#" .. config.colors.foreground, bg = "#" .. config.colors.line },
-        c = { fg = "#" .. config.colors.foreground, bg = "#" .. config.colors.background },
+        a = { fg = config.colors.background, bg = config.colors.orange, gui = "bold" },
+        b = { fg = config.colors.foreground, bg = config.colors.line },
+        c = { fg = config.colors.foreground, bg = config.colors.background },
     },
     inactive = {
-        a = { fg = "#" .. config.colors.blue, bg = "#" .. config.colors.line },
-        b = { fg = "#" .. config.colors.foreground, bg = "#" .. config.colors.line },
-        c = { fg = "#" .. config.colors.foreground, bg = "#" .. config.colors.background },
+        a = { fg = config.colors.blue, bg = config.colors.line },
+        b = { fg = config.colors.foreground, bg = config.colors.line },
+        c = { fg = config.colors.foreground, bg = config.colors.background },
     },
 }
 
@@ -75,151 +84,136 @@ function M.setup(user_config)
     M.apply() -- Automatically apply after setup
 end
 
--- Convert hex to cterm color
-local function hex_to_cterm(hex)
-    local r = tonumber(hex:sub(1, 2), 16)
-    local g = tonumber(hex:sub(3, 4), 16)
-    local b = tonumber(hex:sub(5, 6), 16)
-    return string.format("%d", (r * 36 + g * 6 + b) / 51)
-end
-
--- Apply highlights for various groups
-local function apply_highlight(group, fg, bg, attr)
-    local cmd = "highlight " .. group
-    if fg then
-        cmd = cmd .. " guifg=#" .. fg .. " ctermfg=" .. hex_to_cterm(fg)
-    end
-    if bg then
-        if config.transparent and group == "Normal" then
-            cmd = cmd .. " guibg=NONE ctermbg=NONE"
-        else
-            cmd = cmd .. " guibg=#" .. bg .. " ctermbg=" .. hex_to_cterm(bg)
-        end
-    end
-    if attr then
-        cmd = cmd .. " gui=" .. attr .. " cterm=" .. attr
-    end
-    vim.cmd(cmd)
-end
-
 -- Apply all the necessary highlights for Vim
 function M.apply()
     local c = M.config.colors
 
     -- Basic highlights
-    apply_highlight("Normal", c.foreground, c.background)
-    apply_highlight("NormalFloat", c.foreground, c.background)
-    apply_highlight("LineNr", c.darker, nil)
-    apply_highlight("NonText", c.darker, nil)
-    apply_highlight("SpecialKey", c.selection, nil)
-    apply_highlight("Search", c.background, c.yellow)
-    apply_highlight("TabLine", c.foreground, c.background, "reverse")
-    apply_highlight("StatusLine", c.yellow, c.background, nil)
-    apply_highlight("StatusLineNC", c.window, c.foreground, "reverse")
-    apply_highlight("VertSplit", c.window, c.window, "none")
-    apply_highlight("Visual", nil, c.selection)
-    apply_highlight("Directory", c.blue, nil)
-    apply_highlight("ModeMsg", c.green, nil)
-    apply_highlight("MoreMsg", c.green, nil)
-    apply_highlight("Question", c.green, nil)
-    apply_highlight("WarningMsg", c.red, nil)
-    -- apply_highlight("MatchParen", nil, c.dark)
-    apply_highlight("Folded", c.comment, c.background)
-    apply_highlight("FoldColumn", nil, c.background)
-    apply_highlight("CursorLine", nil, config.underline_current_line and c.line or nil, "none")
-    apply_highlight("CursorColumn", nil, nil, "none")
-    apply_highlight("PMenu", c.foreground, c.darker, "none")
-    apply_highlight("PMenuSel", c.foreground, c.darker, "reverse")
-    apply_highlight("SignColumn", nil, nil, "none")
-    apply_highlight("ColorColumn", nil, nil, "none")
+    vim.api.nvim_set_hl(0, "Normal", { fg = c.foreground, bg = c.background })
+    vim.api.nvim_set_hl(0, "NormalFloat", { fg = c.foreground, bg = c.background })
+    vim.api.nvim_set_hl(0, "LineNr", { fg = c.darker, bg = nil })
+    vim.api.nvim_set_hl(0, "NonText", { fg = c.darker, bg = nil })
+    vim.api.nvim_set_hl(0, "SpecialKey", { fg = c.selection, bg = nil })
+    vim.api.nvim_set_hl(0, "Search", { fg = c.background, bg = c.yellow })
+    vim.api.nvim_set_hl(0, "TabLine", { fg = c.foreground, bg = c.background, reverse = true })
+    vim.api.nvim_set_hl(0, "StatusLine", { fg = c.yellow, bg = c.background, nil })
+    vim.api.nvim_set_hl(0, "StatusLineNC", { fg = c.window, bg = c.foreground, reverse = true })
+    vim.api.nvim_set_hl(0, "VertSplit", { fg = c.window, bg = c.window })
+    vim.api.nvim_set_hl(0, "Visual", { fg = nil, bg = c.selection })
+    vim.api.nvim_set_hl(0, "Directory", { fg = c.blue, bg = nil })
+    vim.api.nvim_set_hl(0, "ModeMsg", { fg = c.green, bg = nil })
+    vim.api.nvim_set_hl(0, "MoreMsg", { fg = c.green, bg = nil })
+    vim.api.nvim_set_hl(0, "Question", { fg = c.green, bg = nil })
+    vim.api.nvim_set_hl(0, "WarningMsg", { fg = c.red, bg = nil })
+    -- vim.api.nvim_set_hl(0, "MatchParen", { fg = nil, bg = c.dark })
+    vim.api.nvim_set_hl(0, "Folded", { fg = c.comment, bg = c.background })
+    vim.api.nvim_set_hl(0, "FoldColumn", { fg = nil, bg = c.background })
+    vim.api.nvim_set_hl(0, "Cursor", { fg = c.background })
+    vim.api.nvim_set_hl(0, "CursorLine", { fg = nil, bg = config.underline_current_line and c.line or nil })
+    vim.api.nvim_set_hl(0, "CursorColumn", { fg = nil, bg = nil })
+    vim.api.nvim_set_hl(0, "PMenu", { fg = c.foreground, bg = c.darker })
+    vim.api.nvim_set_hl(0, "PMenuSel", { fg = c.foreground, bg = c.darker, reverse = true })
+    vim.api.nvim_set_hl(0, "SignColumn", { fg = nil, bg = nil })
+    vim.api.nvim_set_hl(0, "ColorColumn", { fg = nil, bg = nil })
 
     -- Syntax highlights
-    apply_highlight("Type", c.cyan, nil)
-    apply_highlight("Comment", c.comment, nil, config.italic_comments and "italic" or nil)
-    apply_highlight("Todo", c.comment, c.background)
-    apply_highlight("Title", c.comment, nil)
-    apply_highlight("Identifier", c.purple, nil, "none")
-    apply_highlight("Statement", c.orange, nil, "none")
-    apply_highlight("Function", c.yellow, nil)
-    apply_highlight("Constant", c.orange, nil)
-    apply_highlight("Character", c.yellow, nil)
-    apply_highlight("String", c.dark_green, nil)
-    apply_highlight("Number", c.blue, nil)
-    apply_highlight("Special", c.orange, nil)
-    apply_highlight("PreProc", c.orange, nil)
-    apply_highlight("Structure", c.foreground, nil, "none")
-    apply_highlight("Include", c.aqua, nil)
-    apply_highlight("Operator", c.foreground, nil)
-    apply_highlight("@variable", c.foreground, nil)
-    apply_highlight("@comment.documentation", c.green, nil)
+    vim.api.nvim_set_hl(0, "Type", { fg = c.cyan, bg = nil })
+    vim.api.nvim_set_hl(0, "Comment", { fg = c.comment, bg = nil, italic = config.italic_comments })
+    vim.api.nvim_set_hl(0, "Todo", { fg = c.comment, bg = c.background })
+    vim.api.nvim_set_hl(0, "Title", { fg = c.comment, bg = nil })
+    vim.api.nvim_set_hl(0, "Identifier", { fg = c.purple, bg = nil })
+    vim.api.nvim_set_hl(0, "Statement", { fg = c.orange, bg = nil })
+    vim.api.nvim_set_hl(0, "Function", { fg = c.yellow, bg = nil })
+    vim.api.nvim_set_hl(0, "Constant", { fg = c.orange, bg = nil })
+    vim.api.nvim_set_hl(0, "Character", { fg = c.yellow, bg = nil })
+    vim.api.nvim_set_hl(0, "String", { fg = c.dark_green, bg = nil })
+    vim.api.nvim_set_hl(0, "Number", { fg = c.blue, bg = nil })
+    vim.api.nvim_set_hl(0, "Special", { fg = c.orange, bg = nil })
+    vim.api.nvim_set_hl(0, "PreProc", { fg = c.orange, bg = nil })
+    vim.api.nvim_set_hl(0, "Structure", { fg = c.foreground, bg = nil })
+    vim.api.nvim_set_hl(0, "Include", { fg = c.aqua, bg = nil })
+    vim.api.nvim_set_hl(0, "Operator", { fg = c.foreground, bg = nil })
+    vim.api.nvim_set_hl(0, "@variable", { fg = c.foreground, bg = nil })
+    vim.api.nvim_set_hl(0, "@comment.documentation", { fg = c.green, bg = nil })
 
     -- Vim-specific highlights
-    apply_highlight("vimCommand", c.red, nil, "none")
-    apply_highlight("@namespace", c.foreground, nil, "none")
-    apply_highlight("@function", c.yellow, nil, "none")
-    -- apply_highlight("@punctuation.delimiter", c.orange, nil)
+    vim.api.nvim_set_hl(0, "vimCommand", { fg = c.red, bg = nil })
+    vim.api.nvim_set_hl(0, "@namespace", { fg = c.foreground, bg = nil })
+    vim.api.nvim_set_hl(0, "@function", { fg = c.yellow, bg = nil })
+    -- vim.api.nvim_set_hl(0, "@punctuation.delimiter", { fg = c.orange, bg = nil })
 
     -- HTML tags
-    apply_highlight("@tag", c.yellow, nil)
+    vim.api.nvim_set_hl(0, "@tag", { fg = c.yellow, bg = nil })
 
     -- LSP highlights
-    apply_highlight("LspReferenceRead", nil, c.reference)
-    apply_highlight("LspReferenceText", nil, c.reference)
-    apply_highlight("@lsp.type.function", c.yellow, nil, "none")
-    apply_highlight("@lsp.type.variable", c.foreground, nil, "none")
-    apply_highlight("@lsp.type.parameter", c.foreground, nil, "none")
-    apply_highlight("@lsp.type.type", c.bright_green, nil, "none")
-    apply_highlight("@lsp.type.typeAlias", c.bright_green, nil, "none")
-    apply_highlight("@lsp.type.struct", c.cyan, nil, "none")
-    apply_highlight("@lsp.type.class", c.cyan, nil, "none")
-    apply_highlight("@lsp.type.interface", c.aqua, nil, "none")
-    apply_highlight("@lsp.type.enum", c.bright_yellow, nil, "none")
-    apply_highlight("@lsp.type.enumMember.rust", c.purple, nil, "italic")
-    apply_highlight("@lsp.type.namespace", c.foreground, nil, "none")
-    apply_highlight("@lsp.type.keyword", c.orange, nil, "none")
-    apply_highlight("@lsp.type.enumMember", c.foreground, nil, "none")
-    apply_highlight("@lsp.type.number", c.blue, nil, "none")
-    apply_highlight("@lsp.type.typeParameter", c.blue, nil, "none")
-    apply_highlight("@lsp.type.macro", c.blue, nil, "none")
-    apply_highlight("@lsp.type.decorator", c.bright_green, nil, "none")
-    apply_highlight("@lsp.type.lifetime", c.pink, nil, "italic")
+    vim.api.nvim_set_hl(0, "LspReferenceRead", { fg = nil, bg = c.reference })
+    vim.api.nvim_set_hl(0, "LspReferenceText", { fg = nil, bg = c.reference })
+    vim.api.nvim_set_hl(0, "@lsp.type.function", { fg = c.yellow, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.variable", { fg = c.foreground, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.parameter", { fg = c.foreground, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.type", { fg = c.bright_green, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.typeAlias", { fg = c.bright_green, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.struct", { fg = c.cyan, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.class", { fg = c.cyan, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.interface", { fg = c.aqua, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.enum", { fg = c.bright_yellow, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.enumMember.rust", { fg = c.purple, bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "@lsp.type.namespace", { fg = c.foreground, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.keyword", { fg = c.orange, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.enumMember", { fg = c.foreground, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.number", { fg = c.blue, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.typeParameter", { fg = c.blue, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.macro", { fg = c.blue, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.decorator", { fg = c.bright_green, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.lifetime", { fg = c.pink, bg = nil, italic = true })
 
-    -- apply_highlight("@lsp.mod.async", nil, nil, "italic")
+    -- vim.api.nvim_set_hl(0, "@lsp.mod.async", { fg = nil, bg = nil, "italic" })
 
     -- Rust highlights
-    apply_highlight("@lsp.mod.mutable", nil, nil, "underline")
-    apply_highlight("@lsp.mod.documentation", c.green, nil)
-    apply_highlight("@lsp.typemod.operator.controlFlow.rust", c.orange, nil)
+    vim.api.nvim_set_hl(0, "@lsp.mod.mutable", { fg = nil, bg = nil, underline = true })
+    vim.api.nvim_set_hl(0, "@lsp.mod.documentation", { fg = c.green, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.typemod.operator.controlFlow.rust", { fg = c.orange, bg = nil })
 
     -- Terraform highlights
-    apply_highlight("@variable.builtin.terraform", c.foreground, nil)
-    apply_highlight("@lsp.type.type.terraform", c.orange, nil)
-    apply_highlight("@lsp.typemod.enumMember.defaultLibrary.terraform", c.cyan, nil)
+    vim.api.nvim_set_hl(0, "@variable.builtin.terraform", { fg = c.foreground, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.type.type.terraform", { fg = c.orange, bg = nil })
+    vim.api.nvim_set_hl(0, "@lsp.typemod.enumMember.defaultLibrary.terraform", { fg = c.cyan, bg = nil })
 
     -- Diff highlights
-    local diffbackground = "494e56"
-    apply_highlight("diffAdded", c.green, nil)
-    apply_highlight("diffRemoved", c.red, nil)
-    apply_highlight("DiffAdd", c.green, diffbackground)
-    apply_highlight("DiffDelete", c.red, diffbackground)
-    apply_highlight("DiffChange", c.yellow, diffbackground)
-    apply_highlight("DiffText", diffbackground, c.orange)
+    vim.api.nvim_set_hl(0, "DiffAdd", { bg = c.diffAdd })
+    vim.api.nvim_set_hl(0, "DiffDelete", { bg = c.diffDelete })
+    vim.api.nvim_set_hl(0, "DiffChange", { bg = c.diffChange })
+    vim.api.nvim_set_hl(0, "DiffText", { bg = c.diffChanged })
+    vim.api.nvim_set_hl(0, "DiffAdded", { bg = c.diffAdded })
+    vim.api.nvim_set_hl(0, "DiffRemoved", { bg = c.diffRemoved })
+    vim.api.nvim_set_hl(0, "DiffChanged", { bg = c.diffChanged })
+
+    -- Gitsigns diff
+    vim.api.nvim_set_hl(0, "GitSignsAddInline", { bg = c.diffAdded })
+    vim.api.nvim_set_hl(0, "GitSignsChangeInline", { bg = c.diffChanged })
+    vim.api.nvim_set_hl(0, "GitSignsDeleteVirtLnInLine", { bg = c.diffRemoved })
+
+    -- Diffview
+    vim.api.nvim_set_hl(0, "DiffviewDiffAddAsDelete", { fg = c.darker, bg = c.background })
+    vim.api.nvim_set_hl(0, "DiffviewDiffDelete", { fg = c.darker, bg = c.background })
+    vim.api.nvim_set_hl(0, "DiffviewFilePanelInsertions", { fg = c.dark_green })
+    vim.api.nvim_set_hl(0, "DiffviewFilePanelDeletions", { fg = c.red })
 
     -- ShowMarks highlights
-    apply_highlight("ShowMarksHLl", c.orange, c.background, "none")
-    apply_highlight("ShowMarksHLo", c.purple, c.background, "none")
-    apply_highlight("ShowMarksHLu", c.yellow, c.background, "none")
-    apply_highlight("ShowMarksHLm", c.aqua, c.background, "none")
+    vim.api.nvim_set_hl(0, "ShowMarksHLl", { fg = c.orange, bg = c.background })
+    vim.api.nvim_set_hl(0, "ShowMarksHLo", { fg = c.purple, bg = c.background })
+    vim.api.nvim_set_hl(0, "ShowMarksHLu", { fg = c.yellow, bg = c.background })
+    vim.api.nvim_set_hl(0, "ShowMarksHLm", { fg = c.aqua, bg = c.background })
 
     -- Indent line
-    apply_highlight("IndentLine", c.indent, nil)
-    apply_highlight("IndentLineCurrent", c.indent, nil)
+    vim.api.nvim_set_hl(0, "IndentLine", { fg = c.indent, bg = nil })
+    vim.api.nvim_set_hl(0, "IndentLineCurrent", { fg = c.indent, bg = nil })
 
     -- Which Key
-    apply_highlight("WhichKeyGroup", c.green, nil)
-    apply_highlight("WhichKey", c.blue, nil, "bold")
+    vim.api.nvim_set_hl(0, "WhichKeyGroup", { fg = c.green, bg = nil })
+    vim.api.nvim_set_hl(0, "WhichKey", { fg = c.blue, bg = nil, bold = true })
 
-    apply_highlight("LspInlayHint", c.darker, nil, "italic")
+    vim.api.nvim_set_hl(0, "LspInlayHint", { fg = c.darker, bg = nil, italic = true })
 end
 
 return M
