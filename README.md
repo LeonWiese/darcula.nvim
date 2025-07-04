@@ -37,7 +37,7 @@ use "LeonWiese/darcula"
 
 ```lua
 return {
-	"armannikoyan/darcula",
+	"LeonWiese/darcula",
 	lazy = false,
 	priority = 1000,
 	opts = {
