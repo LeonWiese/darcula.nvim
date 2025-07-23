@@ -1,4 +1,4 @@
-# darcula
+# darcula.nvim
 
 ![darcula](./darcula.png)
 
@@ -22,13 +22,13 @@ Is theme is heavily inspired by the IntelliJ theme [Darcula](https://www.jetbrai
 Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
-"LeonWiese/darcula"
+"LeonWiese/darcula.nvim"
 ```
 
 Using [packer.nvim](https://github.com/wbthomason/packer.nvim):
 
 ```lua
-use "LeonWiese/darcula"
+use "LeonWiese/darcula.nvim"
 ```
 
 ## Usage
@@ -37,7 +37,7 @@ use "LeonWiese/darcula"
 
 ```lua
 return {
-	"LeonWiese/darcula",
+	"LeonWiese/darcula.nvim",
 	lazy = false,
 	priority = 1000,
 	opts = {
