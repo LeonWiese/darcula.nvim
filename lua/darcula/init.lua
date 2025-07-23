@@ -134,6 +134,8 @@ function M.apply()
     vim.api.nvim_set_hl(0, "Include", { fg = c.aqua })
     vim.api.nvim_set_hl(0, "Operator", { fg = c.foreground })
     vim.api.nvim_set_hl(0, "@variable", { fg = c.foreground })
+    vim.api.nvim_set_hl(0, "@boolean", { fg = c.orange })
+    vim.api.nvim_set_hl(0, "@character", { fg = c.dark_green })
     vim.api.nvim_set_hl(0, "@comment.documentation", { fg = c.green })
 
     -- Vim-specific highlights
@@ -144,6 +146,11 @@ function M.apply()
 
     -- HTML tags
     vim.api.nvim_set_hl(0, "@tag", { fg = c.yellow })
+    vim.api.nvim_set_hl(0, "@tag.attribute", { fg = c.purple })
+
+    -- XML tags
+    vim.api.nvim_set_hl(0, "xmlAttrib", { fg = c.purple })
+    vim.api.nvim_set_hl(0, "xmlAttribPunct", { fg = c.foreground })
 
     -- LSP highlights
     vim.api.nvim_set_hl(0, "LspReferenceRead", { bg = c.reference })
@@ -174,10 +181,13 @@ function M.apply()
     vim.api.nvim_set_hl(0, "@lsp.typemod.operator.controlFlow.rust", { fg = c.orange })
     vim.api.nvim_set_hl(0, "@lsp.type.selfKeyword.rust", { fg = c.orange })
     vim.api.nvim_set_hl(0, "@lsp.type.selfTypeKeyword.rust", { fg = c.orange })
+    vim.api.nvim_set_hl(0, "@lsp.type.formatSpecifier.rust", { fg = c.orange })
     vim.api.nvim_set_hl(0, "@lsp.type.enumMember.rust", { fg = c.purple, italic = true })
+    vim.api.nvim_set_hl(0, "@lsp.type.const.rust", { fg = c.purple })
     vim.api.nvim_set_hl(0, "@lsp.typemod.constParameter.constant.rust", { fg = c.purple })
     vim.api.nvim_set_hl(0, "@lsp.type.attributeBracket.rust", { fg = c.bright_green })
-    vim.api.nvim_set_hl(0, "@lsp.mod.unsafe.rust", { bg = c.diffDelete })
+    vim.api.nvim_set_hl(0, "@lsp.typemod.derive.attribute.rust", { fg = c.aqua })
+    vim.api.nvim_set_hl(0, "@lsp.mod.unsafe", { bg = c.diffDelete })
 
     -- Terraform highlights
     vim.api.nvim_set_hl(0, "@variable.builtin.terraform", { fg = c.foreground })
