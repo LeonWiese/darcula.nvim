@@ -214,6 +214,16 @@ function M.apply()
     vim.api.nvim_set_hl(0, "DiffviewFilePanelInsertions", { fg = c.dark_green })
     vim.api.nvim_set_hl(0, "DiffviewFilePanelDeletions", { fg = c.red })
 
+    -- oil-git.nvim
+    vim.api.nvim_set_hl(0, "OilGitAdded", { link = "Added" })
+    vim.api.nvim_set_hl(0, "OilGitModified", { link = "Changed" })
+    vim.api.nvim_set_hl(0, "OilGitRenamed", { fg = c.diffChanged })
+    vim.api.nvim_set_hl(0, "OilGitUntracked", { link = "Removed" })
+    vim.api.nvim_set_hl(0, "OilGitIgnored", { fg = c.comment })
+
+    -- oil
+    vim.api.nvim_set_hl(0, "OilFileHidden", { italic = true })
+
     -- ShowMarks highlights
     vim.api.nvim_set_hl(0, "ShowMarksHLl", { fg = c.orange, bg = c.background })
     vim.api.nvim_set_hl(0, "ShowMarksHLo", { fg = c.purple, bg = c.background })
