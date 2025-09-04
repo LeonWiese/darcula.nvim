@@ -193,6 +193,7 @@ function M.apply()
     vim.api.nvim_set_hl(0, "@constructor.python", { fg = c.cyan })
     vim.api.nvim_set_hl(0, "@type.builtin.python", { fg = c.cyan })
     vim.api.nvim_set_hl(0, "@attribute.python", { fg = c.bright_green })
+    vim.api.nvim_set_hl(0, "@attribute.builtin.python", { fg = c.bright_green })
 
     -- Terraform highlights
     vim.api.nvim_set_hl(0, "@variable.builtin.terraform", { fg = c.foreground })
