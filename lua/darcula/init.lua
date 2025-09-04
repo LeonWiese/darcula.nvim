@@ -120,7 +120,7 @@ function M.apply()
     vim.api.nvim_set_hl(0, "Type", { fg = c.cyan })
     vim.api.nvim_set_hl(0, "Comment", { fg = c.comment, italic = config.italic_comments })
     vim.api.nvim_set_hl(0, "Todo", { fg = c.comment, bg = c.background })
-    vim.api.nvim_set_hl(0, "Title", { fg = c.comment })
+    vim.api.nvim_set_hl(0, "Title", { fg = c.orange })
     vim.api.nvim_set_hl(0, "Identifier", { fg = c.purple })
     vim.api.nvim_set_hl(0, "Statement", { fg = c.orange })
     vim.api.nvim_set_hl(0, "Function", { fg = c.yellow })
@@ -188,6 +188,11 @@ function M.apply()
     vim.api.nvim_set_hl(0, "@lsp.type.attributeBracket.rust", { fg = c.bright_green })
     vim.api.nvim_set_hl(0, "@lsp.typemod.derive.attribute.rust", { fg = c.aqua })
     vim.api.nvim_set_hl(0, "@lsp.mod.unsafe", { bg = c.diffDelete })
+
+    -- Python highlights
+    vim.api.nvim_set_hl(0, "@constructor.python", { fg = c.cyan })
+    vim.api.nvim_set_hl(0, "@type.builtin.python", { fg = c.cyan })
+    vim.api.nvim_set_hl(0, "@attribute.python", { fg = c.bright_green })
 
     -- Terraform highlights
     vim.api.nvim_set_hl(0, "@variable.builtin.terraform", { fg = c.foreground })
