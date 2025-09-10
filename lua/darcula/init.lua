@@ -195,6 +195,9 @@ function M.apply()
     vim.api.nvim_set_hl(0, "@attribute.python", { fg = c.bright_green })
     vim.api.nvim_set_hl(0, "@attribute.builtin.python", { fg = c.bright_green })
 
+    -- Java highlights (jdtls)
+    vim.api.nvim_set_hl(0, "@lsp.type.modifier.java", { fg = c.orange })
+
     -- Terraform highlights
     vim.api.nvim_set_hl(0, "@variable.builtin.terraform", { fg = c.foreground })
     vim.api.nvim_set_hl(0, "@lsp.type.type.terraform", { fg = c.orange })
