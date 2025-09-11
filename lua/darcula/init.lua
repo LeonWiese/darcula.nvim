@@ -198,6 +198,13 @@ function M.apply()
     -- Java highlights (jdtls)
     vim.api.nvim_set_hl(0, "@lsp.type.modifier.java", { fg = c.orange })
 
+    -- zsh highlights
+    vim.api.nvim_set_hl(0, "zshDeref", { fg = c.orange })
+    vim.api.nvim_set_hl(0, "zshSubstQuoted", { fg = c.orange })
+    vim.api.nvim_set_hl(0, "zshSubst", { fg = c.orange })
+    vim.api.nvim_set_hl(0, "zshSubstDelim", { fg = c.orange })
+    vim.api.nvim_set_hl(0, "zshCommands", { fg = c.yellow })
+
     -- Terraform highlights
     vim.api.nvim_set_hl(0, "@variable.builtin.terraform", { fg = c.foreground })
     vim.api.nvim_set_hl(0, "@lsp.type.type.terraform", { fg = c.orange })
